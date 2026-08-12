@@ -1,0 +1,7 @@
+{
+  "lab": 1,
+  "title": "Foundations and governance",
+  "rubric": ".claude/rubrics/lab-1.yaml",
+  "journey_session": "lab-1-learner-id",
+  "objectives": ["plugin-installed", "spec-created", "quality-gates-ran", "journey-captured", "no-pan-in-journey"]
+}
