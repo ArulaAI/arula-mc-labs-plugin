@@ -2,35 +2,55 @@
   "hooks": {
     "SessionStart": [
       {
-        "type": "command",
-        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py session-start",
-        "timeout": 10
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" session-start",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PreToolUse": [
       {
-        "type": "command",
-        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py pre-tool",
-        "timeout": 5
-      },
-      {
-        "type": "command",
-        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/quality_gates.py pre-tool",
-        "timeout": 30
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" pre-tool",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/quality_gates.py\" pre-tool",
+            "timeout": 30
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
-        "type": "command",
-        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py post-tool",
-        "timeout": 5
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" post-tool",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "Stop": [
       {
-        "type": "command",
-        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py stop",
-        "timeout": 10
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" stop",
+            "timeout": 10
+          }
+        ]
       }
     ]
   }
