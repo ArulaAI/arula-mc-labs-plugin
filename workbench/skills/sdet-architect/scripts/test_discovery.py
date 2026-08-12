@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Find tests that reference changed files. Usage: python3 test_discovery.py <file1> [file2...]"""
-import re
 import sys
 from pathlib import Path
 

@@ -54,7 +54,8 @@ def write_status(spec_path: str, result: dict) -> str:
 
 
 if __name__ == "__main__":
-    import tempfile, os
+    import tempfile
+    import os
     sample = "\n".join(REQUIRED_SECTIONS) + "\nAC-1: Given X when Y then Z"
     with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False) as f:
         f.write(sample)

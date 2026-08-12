@@ -50,7 +50,8 @@ def close_github_issue(issue_number: int, comment: str | None = None) -> None:
 
 if __name__ == "__main__":
     issues = [Issue(number=1, title="Test", body="Body", acs=["AC-1"])]
-    import tempfile, os
+    import tempfile
+    import os
     with tempfile.NamedTemporaryFile(suffix=".json", delete=False, mode="w") as f:
         tmp = f.name
     save_issues(issues, tmp)
