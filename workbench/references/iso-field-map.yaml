@@ -1,0 +1,20 @@
+# ISO 8583 field reference (subset — payments-critical fields)
+fields:
+  2:  { name: PAN,            type: LLVAR, max: 19, sensitive: true }
+  3:  { name: ProcessingCode, type: N,     len: 6,  sensitive: false }
+  4:  { name: Amount,         type: N,     len: 12, sensitive: false }
+  7:  { name: TransmissionDateTime, type: N, len: 10, sensitive: false }
+  11: { name: STAN,           type: N,     len: 6,  sensitive: false }
+  12: { name: LocalTime,      type: N,     len: 6,  sensitive: false }
+  13: { name: LocalDate,      type: N,     len: 4,  sensitive: false }
+  22: { name: POSEntryMode,   type: N,     len: 3,  sensitive: false }
+  35: { name: Track2Data,     type: LLVAR, max: 37, sensitive: true }
+  37: { name: RRN,            type: AN,    len: 12, sensitive: false }
+  38: { name: AuthCode,       type: AN,    len: 6,  sensitive: false }
+  39: { name: ResponseCode,   type: AN,    len: 2,  sensitive: false }
+  41: { name: TerminalID,     type: ANS,   len: 8,  sensitive: false }
+  42: { name: MerchantID,     type: ANS,   len: 15, sensitive: false }
+  45: { name: Track1Data,     type: LLVAR, max: 76, sensitive: true }
+  49: { name: Currency,       type: N,     len: 3,  sensitive: false }
+  52: { name: PINBlock,       type: B,     len: 8,  sensitive: true }
+  55: { name: EMVData,        type: LLLVAR,max: 255,sensitive: false }

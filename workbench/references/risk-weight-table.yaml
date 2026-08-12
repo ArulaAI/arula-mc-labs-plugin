@@ -1,0 +1,12 @@
+# Release risk scoring weights (used by release-risk-scorer)
+# Total score >= threshold triggers a block
+threshold: 70
+factors:
+  pan_path_change:      { weight: 30, description: "Change touches PAN handling code" }
+  auth_flow_change:     { weight: 25, description: "Change alters authorization sequence" }
+  contract_change:      { weight: 20, description: "Downstream API contract modified" }
+  hold_logic_change:    { weight: 15, description: "Holds or partial auth logic modified" }
+  new_iso_field:        { weight: 10, description: "New ISO field added or removed" }
+  no_tests:             { weight: 25, description: "Changed files have no test coverage" }
+  no_spec:              { weight: 20, description: "No spec linked in PR description" }
+  no_validator_run:     { weight: 15, description: "code-to-spec-validator not run" }
