@@ -1,5 +1,4 @@
 """Coverage delta math, threshold checks, AC-to-test-file mapping."""
-import json
 import re
 from pathlib import Path
 

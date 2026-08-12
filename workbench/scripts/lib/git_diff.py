@@ -1,6 +1,5 @@
 """Git and diff helpers — extract diffs, list changed files, stage and commit."""
 import subprocess
-import sys
 
 
 def get_diff(base: str = "HEAD", paths: list[str] | None = None) -> str:

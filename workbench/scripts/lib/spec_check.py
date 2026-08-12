@@ -48,7 +48,7 @@ def validate_spec(spec_path: str) -> dict:
 
 def write_status(spec_path: str, result: dict) -> str:
     """Write spec.status.json next to the spec file. Returns the status file path."""
-    status_path = spec_path.replace(".md", ".status.json")
+    status_path = str(Path(spec_path).with_suffix(".status.json"))
     Path(status_path).write_text(json.dumps(result, indent=2))
     return status_path
 
