@@ -1,0 +1,11 @@
+{
+  "name": "mastercard-workbench",
+  "owner": "Mastercard AU (private)",
+  "plugins": [
+    {
+      "name": "workbench",
+      "source": "../workbench",
+      "description": "Engineering workbench plugin"
+    }
+  ]
+}
