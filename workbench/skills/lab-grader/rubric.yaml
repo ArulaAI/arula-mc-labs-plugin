@@ -1,0 +1,35 @@
+# Starter rubric template — copy to .claude/rubrics/lab-N.yaml and customise
+lab: 0
+title: "Starter rubric (not a real lab)"
+pass_threshold: 70  # percent of max_score needed to pass
+
+criteria:
+  - id: plugin-installed
+    description: "Learner installed the workbench plugin"
+    max_score: 10
+    evidence: "session-start event present in journey"
+    check: "event_exists:session-start"
+
+  - id: spec-created
+    description: "Learner ran /spec and produced a valid spec.status.json"
+    max_score: 20
+    evidence: "pre-tool event with tool=spec-craft or validate_spec.py output in journey"
+    check: "event_contains:pre-tool:spec"
+
+  - id: quality-gates-ran
+    description: "Quality gates ran and passed"
+    max_score: 20
+    evidence: "gate event with passed=true in journey"
+    check: "event_contains:gate:passed"
+
+  - id: journey-captured
+    description: "Journey file has at least 5 events"
+    max_score: 10
+    evidence: "journey file line count >= 5"
+    check: "event_count_gte:5"
+
+  - id: no-pan-in-journey
+    description: "No PAN or secrets in the journey file"
+    max_score: 40
+    evidence: "secret_scan returns empty on journey file"
+    check: "secret_scan_clean"
