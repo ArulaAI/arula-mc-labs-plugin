@@ -22,8 +22,11 @@ in a follow-up PR, and flag ACs with no test coverage. Runs agentically in CI.
 3. It uses `sdet-architect/scripts/test_discovery.py` to map changed files
    to their test files.
 4. For each broken test, the model proposes a minimal fix.
-5. Proposed fixes are opened as a follow-up PR (draft).
-6. Missing ACs (no test coverage) are posted as PR comments.
+5. The primary path writes the draft-fix artifact locally (a patch plus
+   `docs/DRAFT_FIX.md`) via the shared lib's local-artifact mode (authored in Lab 4).
+   The draft-PR path below is optional and CI-gated.
+6. Optional (CI): open the proposed fixes as a draft follow-up PR and post missing
+   ACs (no test coverage) as PR comments.
 
 ## Python load-bearing (Lab 4)
 `scripts/maintainer.py` — implement using `lib/git_diff.py`, `lib/test_runner.py`,

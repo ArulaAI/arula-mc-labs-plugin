@@ -21,6 +21,9 @@ Review for:
 - Security issues (secrets, PAN handling, unsafe patterns)
 - Dead code, unused imports, commented-out code
 
+If the input is not a diff (e.g. a plan or prose artifact), review it as prose
+and return findings without `file:line` anchors. Everything else below is unchanged.
+
 Output format:
 ```
 REVIEW SUMMARY: APPROVE | REQUEST CHANGES | BLOCKER

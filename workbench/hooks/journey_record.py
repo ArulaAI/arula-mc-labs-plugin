@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 """
 Append-only journey event logger.
-Usage: python3 journey_record.py <event>
+Usage: <hook payload JSON on stdin> | python3 journey_record.py <event>
 Events: session-start, pre-tool, post-tool, stop
-Reads CLAUDE_SESSION_ID and CLAUDE_TOOL_NAME from environment if available.
+
+Claude Code delivers hook event data as JSON on stdin. Environment variables
+are a secondary fallback and a timestamp is the last resort, so a manual call
+with no stdin still records something usable.
+
+The positional <event> argument stays the authoritative event label written to
+the journey: `grader.py` matches these labels exactly against rubric checks
+(event_exists:session-start, event_contains:pre-tool:...), so the payload's
+`hook_event_name` is recorded as an extra field rather than replacing it.
 """
 import json
 import os
@@ -15,9 +23,19 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from lib.secret_scan import scan_for_pan, scan_for_secrets
 
 JOURNEY_DIR = Path(os.environ.get("WORKBENCH_JOURNEY_DIR", "journey"))
-SESSION_ID = os.environ.get("CLAUDE_SESSION_ID", f"session-{int(time.time())}")
 
 SENSITIVE_KEYS = {"pan", "track1", "track2", "pin", "password", "secret", "token", "key"}
+
+
+def read_payload() -> dict:
+    """Read the hook event payload from stdin JSON. Returns {} if absent or invalid."""
+    if sys.stdin.isatty():
+        return {}
+    try:
+        payload = json.loads(sys.stdin.read() or "{}")
+    except (json.JSONDecodeError, ValueError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
 
 
 def redact(obj):
@@ -36,14 +54,14 @@ def redact(obj):
     return obj
 
 
-def append_event(event_type: str, data: dict) -> None:
+def append_event(event_type: str, data: dict, session_id: str) -> None:
     """Append a single event to the session journey file."""
     JOURNEY_DIR.mkdir(parents=True, exist_ok=True)
-    journey_file = JOURNEY_DIR / f"{SESSION_ID}.jsonl"
+    journey_file = JOURNEY_DIR / f"{session_id}.jsonl"
     event = {
         "ts": int(time.time()),
         "event": event_type,
-        "session": SESSION_ID,
+        "session": session_id,
         **redact(data),
     }
     with journey_file.open("a") as f:
@@ -51,20 +69,31 @@ def append_event(event_type: str, data: dict) -> None:
 
 
 def main():
-    event = sys.argv[1] if len(sys.argv) > 1 else "unknown"
-    tool_name = os.environ.get("CLAUDE_TOOL_NAME", "")
-    tool_input = os.environ.get("CLAUDE_TOOL_INPUT", "")
+    payload = read_payload()
+    event = sys.argv[1] if len(sys.argv) > 1 else payload.get("hook_event_name", "unknown")
+    session_id = (payload.get("session_id")
+                  or os.environ.get("CLAUDE_SESSION_ID")
+                  or f"session-{int(time.time())}")
+
+    tool_name = payload.get("tool_name") or os.environ.get("CLAUDE_TOOL_NAME", "")
+    tool_input = payload.get("tool_input") or os.environ.get("CLAUDE_TOOL_INPUT", "")
+    if not isinstance(tool_input, str):
+        tool_input = json.dumps(tool_input)
 
     if event == "session-start":
-        append_event("session-start", {"cwd": os.getcwd()})
+        data = {"cwd": payload.get("cwd", os.getcwd())}
     elif event == "pre-tool":
-        append_event("pre-tool", {"tool": tool_name, "input_preview": tool_input[:200]})
+        data = {"tool": tool_name, "input_preview": tool_input[:200]}
     elif event == "post-tool":
-        append_event("post-tool", {"tool": tool_name})
+        data = {"tool": tool_name}
     elif event == "stop":
-        append_event("stop", {"reason": os.environ.get("CLAUDE_STOP_REASON", "")})
+        data = {"reason": payload.get("stop_reason", os.environ.get("CLAUDE_STOP_REASON", ""))}
     else:
-        append_event(event, {})
+        data = {}
+
+    if payload.get("hook_event_name"):
+        data["hook_event"] = payload["hook_event_name"]
+    append_event(event, data, session_id)
 
 
 if __name__ == "__main__":

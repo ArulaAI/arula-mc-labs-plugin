@@ -1,8 +1,15 @@
 # Workbench Plugin — Architecture
 
 ## CLI Version
-Built for Claude Code **2.1.177+**. Component auto-discovery is used —
-no explicit paths in `plugin.json`. Validate with `claude plugin validate ./workbench`.
+Built for Claude Code **2.1.177+**; the 0.2.0 acceptance run additionally verified on 2.1.233.
+Component auto-discovery is used — no explicit paths in `plugin.json`. Validate with
+`claude plugin validate ./workbench`.
+
+The `journey_record.py` hook parses its event payload as JSON on stdin per Anthropic's
+documented hook contract (0.2.0). Previously it read `CLAUDE_SESSION_ID`/`CLAUDE_TOOL_NAME`
+from environment variables, which the hook contract never populates — every invocation fell
+back to a fresh timestamp-based session id, scattering one continuous session across many
+`journey/*.jsonl` files.
 
 ## Superpowers Integration
 **Mode: Companion install.** The `superpowers` plugin must be installed alongside
@@ -13,13 +20,14 @@ no explicit paths in `plugin.json`. Validate with `claude plugin validate ./work
 ```
 workbench/
   .claude-plugin/plugin.json   # manifest (name, version, author, keywords)
-  commands/                    # thin slash-command entry points (8 files)
+  commands/                    # thin slash-command entry points (9 files, incl. /hand-off)
   skills/                      # five primary skills + three CI stubs
   agents/                      # four fresh-context subagents
   hooks/                       # hooks.json + journey_record.py + quality_gates.py
   rules/                       # four governance files (auto-loaded)
   scripts/lib/                 # shared deterministic Python (7 modules)
   references/                  # static lookup content (6 files)
+  tests/                       # pytest for hooks (0.2.0)
   docs/                        # this file + EXTENDING.md
 ```
 

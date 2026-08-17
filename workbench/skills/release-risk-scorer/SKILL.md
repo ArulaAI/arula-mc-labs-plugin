@@ -20,9 +20,11 @@ the configurable threshold as a required GitHub check.
    _(Lab 4: implement this script)_
 2. The script reads the diff via `lib/git_diff.py` and scores each risk factor
    from `references/risk-weight-table.yaml`.
-3. Posts the score as a PR check run via `lib/pr.py`.
-4. If the total score >= threshold: set the check run to FAILURE (blocks merge).
-5. If the total score < threshold: set the check run to SUCCESS.
+3. The primary path writes `risk-score.json` locally and exits non-zero at or above
+   the threshold (blocking locally) via the shared lib's local-artifact mode
+   (authored in Lab 4). The check-run path below is optional and CI-gated.
+4. Optional (CI): post the score as a PR check run via `lib/pr.py` — FAILURE at or
+   above the threshold (blocks merge), SUCCESS below it.
 
 ## Python load-bearing (Lab 4)
 `scripts/risk_scorer.py` — implement using `lib/git_diff.py`, `lib/pr.py`,

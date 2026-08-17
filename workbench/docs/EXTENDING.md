@@ -105,6 +105,26 @@ skill or hook script with the `sys.path` pattern above. The modules are:
 | `secret_scan` | `scan_for_pan()`, `scan_for_secrets()`, `scan_diff()` |
 | `issue` | `Issue`, `load_issues()`, `save_issues()`, `open_github_issue()`, `close_github_issue()` |
 
+## Using the agents outside their default input
+
+- **`planner`** accepts a validated spec *or* another structured backlog (a risk register, a
+  findings list). It returns JSON and does not save its own output — **the calling session
+  writes the plan** (e.g. to `docs/plans/plan.md`) from that JSON. This is the norm; do not
+  grant the agent `Write` to work around it.
+- **`pr-reviewer`** is diff-shaped by default. When reviewing a plan or other prose artifact,
+  it returns findings without `file:line` anchors.
+
+## Stage boundaries: `/hand-off`
+
+`/hand-off` appends a structured, model-authored checkpoint to `docs/workflow-tracker.md`.
+It is deliberately **not** a deterministic script: the audit backbone is `journey_record.py`'s
+hook capture, which runs independently of what the command writes. Grading reads hook-captured
+journey events for pass/fail and treats `workflow-tracker.md` as the human-readable record — so
+a thin or skipped hand-off never silently breaks grading integrity.
+
+A lab may keep its own `.claude/commands/hand-off.md`; a project-level command overrides the
+plugin's. The plugin command runs `.claude/scripts/journey_event.py` when the project provides one.
+
 ## Contribution loop
 
 1. Write the SKILL.md (spec first).

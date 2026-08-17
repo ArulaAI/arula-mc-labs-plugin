@@ -15,7 +15,9 @@ the developer in control at each gate.
 ## Pipeline (per issue)
 1. **Plan:** Run the `planner` subagent with the spec. Python writes issues to
    `issues.json` and opens GitHub Issues via `issue.py`.
-2. **TDD:** Invoke `sdet-architect` to write failing tests for the issue.
+2. **TDD:** Write failing tests for the issue — either via the `sdet-architect`
+   skill, or directly from the issue's acceptance criteria when `sdet-architect`
+   is not in play. This step does not hard-depend on `sdet-architect`.
 3. **Code generation:** Implement until the issue's tests pass.
    `test_runner.py` runs the tests; the model edits code.
 4. **Code-to-spec validation (fresh context):** Spawn the `code-to-spec-validator`
