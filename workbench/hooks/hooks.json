@@ -7,7 +7,7 @@
           {
             "type": "command",
             "shell": "bash",
-            "command": "PY=$(py -3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python -c \"import sys;sys.version_info>=(3,8)or sys.exit(1);print(sys.executable)\" 2>/dev/null) || { echo 'Python 3.8+ not found. Install from https://python.org' >&2; exit 1; }; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" session-start",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/resolve-python\" && bash \"${CLAUDE_PLUGIN_ROOT}/hooks/run-python\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" session-start",
             "timeout": 10
           }
         ]
@@ -20,13 +20,13 @@
           {
             "type": "command",
             "shell": "bash",
-            "command": "PY=$(py -3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python -c \"import sys;sys.version_info>=(3,8)or sys.exit(1);print(sys.executable)\" 2>/dev/null) || { echo 'Python 3.8+ not found. Install from https://python.org' >&2; exit 1; }; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" pre-tool",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/run-python\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" pre-tool",
             "timeout": 5
           },
           {
             "type": "command",
             "shell": "bash",
-            "command": "PY=$(py -3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python -c \"import sys;sys.version_info>=(3,8)or sys.exit(1);print(sys.executable)\" 2>/dev/null) || { echo 'Python 3.8+ not found. Install from https://python.org' >&2; exit 1; }; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/quality_gates.py\" pre-tool",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/run-python\" \"${CLAUDE_PLUGIN_ROOT}/hooks/quality_gates.py\" pre-tool",
             "timeout": 30
           }
         ]
@@ -39,7 +39,7 @@
           {
             "type": "command",
             "shell": "bash",
-            "command": "PY=$(py -3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python -c \"import sys;sys.version_info>=(3,8)or sys.exit(1);print(sys.executable)\" 2>/dev/null) || { echo 'Python 3.8+ not found. Install from https://python.org' >&2; exit 1; }; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" post-tool",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/run-python\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" post-tool",
             "timeout": 5
           }
         ]
@@ -52,7 +52,7 @@
           {
             "type": "command",
             "shell": "bash",
-            "command": "PY=$(py -3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python3 -c \"import sys;print(sys.executable)\" 2>/dev/null) || PY=$(python -c \"import sys;sys.version_info>=(3,8)or sys.exit(1);print(sys.executable)\" 2>/dev/null) || { echo 'Python 3.8+ not found. Install from https://python.org' >&2; exit 1; }; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" stop",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/run-python\" \"${CLAUDE_PLUGIN_ROOT}/hooks/journey_record.py\" stop",
             "timeout": 10
           }
         ]
