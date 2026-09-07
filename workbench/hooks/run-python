@@ -1,9 +1,29 @@
 #!/usr/bin/env bash
 CACHE_FILE="${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/.python_path"
 
+# A cached path is only usable if it still runs. Checking that the file is merely non-empty
+# ([ -s ]) accepts a path whose interpreter has since been removed, upgraded or renamed -- and a
+# project that commits this cache, or shares it between machines, ships exactly that state. In
+# that case `exec` below fails with 126/127 and the hook never runs, which for a blocking gate
+# means it is silently disabled.
+# Checked on produced output rather than exit status: a great many binaries exit 0 while ignoring
+# their arguments -- /bin/true is the trivial example -- so an exit-code test would accept them as
+# a Python interpreter and then exec them with a script path they silently discard.
+usable() {
+  [ -n "${1:-}" ] || return 1
+  [ "$("$1" -c 'import sys; print(1 if sys.version_info >= (3, 8) else 0)' 2>/dev/null)" = "1" ]
+}
+
+PY=""
+
 if [ -f "$CACHE_FILE" ] && [ -s "$CACHE_FILE" ]; then
-  PY=$(cat "$CACHE_FILE")
-else
+  CACHED=$(cat "$CACHE_FILE" 2>/dev/null || printf '')
+  if usable "$CACHED"; then
+    PY="$CACHED"
+  fi
+fi
+
+if [ -z "$PY" ]; then
   if   PY=$(py -3 -c "import sys;print(sys.executable)" 2>/dev/null); then :
   elif PY=$(python3 -c "import sys;print(sys.executable)" 2>/dev/null); then :
   elif PY=$(python -c "import sys;sys.version_info>=(3,8)or sys.exit(1);print(sys.executable)" 2>/dev/null); then :
