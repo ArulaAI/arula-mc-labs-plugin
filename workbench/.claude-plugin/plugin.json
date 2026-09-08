@@ -1,6 +1,6 @@
 {
   "name": "workbench",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Mastercard AU engineering workbench: spec, test, build, review and ship for Claude Code.",
   "author": {
     "name": "Arula.AI / InRhythm",
