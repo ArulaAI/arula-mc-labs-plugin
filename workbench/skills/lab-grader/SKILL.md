@@ -14,7 +14,7 @@ cohort-level roll-up.
 - Rubric file path (e.g. `.claude/rubrics/lab-1.yaml`) — resolved from `lab.json` if present
 
 ## Steps
-1. Run `python3 ${CLAUDE_PLUGIN_ROOT}/skills/lab-grader/scripts/grader.py <journey.jsonl> <rubric.yaml>`
+1. Run `bash "${CLAUDE_PLUGIN_ROOT}/hooks/run-python" "${CLAUDE_PLUGIN_ROOT}/skills/lab-grader/scripts/grader.py" <journey.jsonl> <rubric.yaml>`
    This scores all objective, measurable items from the journey log.
 2. The model writes the qualitative feedback section based on the grader output.
 3. Print the grade card to stdout.

@@ -25,7 +25,7 @@ for playback and grading by `lab-grader`.
 2. Print the journey file path.
 
 ### /journey export <session_id>
-1. Run `python3 ${CLAUDE_PLUGIN_ROOT}/skills/journey-recorder/scripts/recorder.py export <session_id>`
+1. Run `bash "${CLAUDE_PLUGIN_ROOT}/hooks/run-python" "${CLAUDE_PLUGIN_ROOT}/skills/journey-recorder/scripts/recorder.py" export <session_id>`
 2. This converts `journey/<session_id>.jsonl` to `journey/<session_id>.md` (human-readable).
 3. Print the path of the exported file.
 

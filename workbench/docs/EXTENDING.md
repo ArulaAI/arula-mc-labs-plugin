@@ -113,6 +113,13 @@ skill or hook script with the `sys.path` pattern above. The modules are:
   grant the agent `Write` to work around it.
 - **`pr-reviewer`** is diff-shaped by default. When reviewing a plan or other prose artifact,
   it returns findings without `file:line` anchors.
+- **`repo-auditor`** is read-only (Read, Glob, Grep). It returns a structured six-heading report
+  (REPOSITORY, CLAIMS, EVIDENCE, CONTRADICTIONS, UNKNOWNS, STOP_REQUIRED). The brief controls
+  the shape — if a brief asks for a different return format, the auditor follows the brief.
+- **`repo-implementer`** executes an agent contract against one repository. It requires a
+  verification command in the contract and runs it before returning. When the contract declares
+  `NO_DIFF_EXPECTED: true`, the agent proves criteria are already satisfied rather than
+  manufacturing a change.
 
 ## Stage boundaries: `/hand-off`
 

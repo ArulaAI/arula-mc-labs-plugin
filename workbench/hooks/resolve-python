@@ -2,11 +2,19 @@
 set -euo pipefail
 CACHE_FILE="${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/.python_path"
 
-if   PY=$(py -3 -c "import sys;print(sys.executable)" 2>/dev/null); then :
-elif PY=$(python3 -c "import sys;print(sys.executable)" 2>/dev/null); then :
-elif PY=$(python -c "import sys;sys.version_info>=(3,8)or sys.exit(1);print(sys.executable)" 2>/dev/null); then :
-else echo "Python 3.8+ not found. Install from https://python.org" >&2; exit 1
+if   PY=$(py -3 -c "import sys;sys.version_info>=(3,11)or sys.exit(1);print(sys.executable)" 2>/dev/null); then :
+elif PY=$(python3 -c "import sys;sys.version_info>=(3,11)or sys.exit(1);print(sys.executable)" 2>/dev/null); then :
+elif PY=$(python -c "import sys;sys.version_info>=(3,11)or sys.exit(1);print(sys.executable)" 2>/dev/null); then :
+else echo "Python 3.11+ not found. Install from https://python.org" >&2; exit 1
 fi
 
 printf '%s' "$PY" > "$CACHE_FILE"
+# Verify the write succeeded
+if [ ! -s "$CACHE_FILE" ]; then
+  echo "Warning: could not write Python path cache to $CACHE_FILE" >&2
+fi
+
+# Warn if PyYAML is missing (needed by lab-grader, not by all hooks)
+"$PY" -c "import yaml" 2>/dev/null || echo "Warning: PyYAML not found. Install with: $PY -m pip install pyyaml" >&2
+
 echo "Resolved Python for hooks: $PY" >&2

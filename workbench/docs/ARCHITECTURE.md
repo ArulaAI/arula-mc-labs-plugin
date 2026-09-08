@@ -1,7 +1,7 @@
 # Workbench Plugin — Architecture
 
 ## CLI Version
-Built for Claude Code **2.1.177+**; the 0.2.0 acceptance run additionally verified on 2.1.233.
+Built for Claude Code **2.1.108+**; additionally verified on 2.1.233.
 Component auto-discovery is used — no explicit paths in `plugin.json`. Validate with
 `claude plugin validate ./workbench`.
 
@@ -22,7 +22,7 @@ workbench/
   .claude-plugin/plugin.json   # manifest (name, version, author, keywords)
   commands/                    # thin slash-command entry points (9 files, incl. /hand-off)
   skills/                      # five primary skills + three CI stubs
-  agents/                      # four fresh-context subagents
+  agents/                      # six subagents (incl. repo-auditor, repo-implementer)
   hooks/                       # hooks.json + journey_record.py + quality_gates.py
   rules/                       # four governance files (auto-loaded)
   scripts/lib/                 # shared deterministic Python (7 modules)
@@ -67,7 +67,7 @@ Defined in `references/failure-modes.md`. Loaded verbatim by
 unsafe data handling, broken contract, missing human gate.
 
 ## Hooks Schema
-Plugin hooks use the matcher/hooks nested format required by Claude Code 2.1.177+:
+Plugin hooks use the matcher/hooks nested format required by Claude Code 2.1.108+:
 ```json
 {
   "hooks": {

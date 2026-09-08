@@ -5,7 +5,7 @@ development, SDET-grade testing, PAN-safe governance, and lab grading.
 
 ## Prerequisites
 
-- Claude Code **2.1.177+**
+- Claude Code **2.1.108+**
 - Python **3.11+**
 - `pyyaml` (`pip install pyyaml`) — required by `lab-grader`
 - The `superpowers` companion plugin:
@@ -74,10 +74,10 @@ Journey logs are written to `$WORKBENCH_JOURNEY_DIR` (default: `~/.workbench/jou
 
 Four rules files auto-load on every session:
 
-- `rules/spec-first.md` — no code without a validated spec
-- `rules/payments-safety.md` — PAN handling and secrets governance
-- `rules/tdd-contract.md` — test-first TDD contract
-- `rules/pr-governance.md` — one PR per issue, required checks
+- `rules/ai-use-policy.md` — what Claude may do autonomously vs. what requires human gates
+- `rules/coding-standards.md` — naming, function length, PAN masking, testing, git conventions
+- `rules/payments-guardrails.md` — PAN handling, ISO field constraints, authorization flow, contracts
+- `rules/spec-template.md` — seven required sections for a validated spec
 
 ## Security constraints
 
